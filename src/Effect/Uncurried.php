@@ -13,19 +13,28 @@ for ($i = 1; $i <= 10; $i++) {
         };
     };
 
-    $exports["runEffectFn$i"] = function($fn) use ($i) {
-        $curry = function($argsLeft, $collectedArgs) use (&$curry, $fn) {
-            if ($argsLeft === 0) {
-                return function() use ($fn, $collectedArgs) {
-                    return $fn(...$collectedArgs);
+    $exports["runEffectFn$i"] = function(...$args) use ($i) {
+        $expectedArgs = $i + 1; // fn + $i arguments
+        
+        $curry = function($collectedArgs) use (&$curry, $expectedArgs) {
+            if (count($collectedArgs) >= $expectedArgs) {
+                $fn = $collectedArgs[0];
+                $actualArgs = array_slice($collectedArgs, 1, $expectedArgs - 1);
+                $res = function() use ($fn, $actualArgs) {
+                    return $fn(...$actualArgs);
                 };
+                if (count($collectedArgs) > $expectedArgs) {
+                    $extra = array_slice($collectedArgs, $expectedArgs);
+                    return $res(...$extra);
+                }
+                return $res;
             }
-            return function($arg) use (&$curry, $argsLeft, $collectedArgs) {
-                $collectedArgs[] = $arg;
-                return $curry($argsLeft - 1, $collectedArgs);
+            return function(...$more) use (&$curry, $collectedArgs) {
+                return $curry(array_merge($collectedArgs, $more));
             };
         };
-        return $curry($i, []);
+        
+        return $curry($args);
     };
 }
 
