@@ -2,10 +2,10 @@
 
 $pureE = function($x) use (&$pureE) { return function() use(&$x) { return $x; }; };
 $bindE = function($a, $f = null) use (&$bindE) {
-    if (func_num_args() < 2) {
-        $__args = func_get_args();
+    if (\func_num_args() < 2) {
+        $__args = \func_get_args();
         return function(...$more) use ($__args, &$bindE) {
-            return $bindE(...array_merge($__args, $more));
+            return $bindE(...\array_merge($__args, $more));
         };
     }
     return function() use(&$a, &$f) {
@@ -22,10 +22,10 @@ $untilE = function($f) {
 };
 
 $whileE = function($f, $a = null) use (&$whileE) {
-    if (func_num_args() < 2) {
-        $__args = func_get_args();
+    if (\func_num_args() < 2) {
+        $__args = \func_get_args();
         return function(...$more) use ($__args, &$whileE) {
-            return $whileE(...array_merge($__args, $more));
+            return $whileE(...\array_merge($__args, $more));
         };
     }
     return function() use (&$f, &$a) {
@@ -36,10 +36,10 @@ $whileE = function($f, $a = null) use (&$whileE) {
 };
 
 $forE = function($lo, $hi = null, $f = null) use (&$forE) {
-    if (func_num_args() < 3) {
-        $__args = func_get_args();
+    if (\func_num_args() < 3) {
+        $__args = \func_get_args();
         return function(...$more) use ($__args, &$forE) {
-            return $forE(...array_merge($__args, $more));
+            return $forE(...\array_merge($__args, $more));
         };
     }
     return function() use (&$lo, &$hi, &$f) {
@@ -50,10 +50,10 @@ $forE = function($lo, $hi = null, $f = null) use (&$forE) {
 };
 
 $foreachE = function($as, $f = null) use (&$foreachE) {
-    if (func_num_args() < 2) {
-        $__args = func_get_args();
+    if (\func_num_args() < 2) {
+        $__args = \func_get_args();
         return function(...$more) use ($__args, &$foreachE) {
-            return $foreachE(...array_merge($__args, $more));
+            return $foreachE(...\array_merge($__args, $more));
         };
     }
     return function() use (&$as, &$f) {
