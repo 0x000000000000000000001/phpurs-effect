@@ -1,38 +1,43 @@
 <?php
 
-$pureE = function($x) { return function() use($x) { return $x; }; };
-$bindE = function($a, $f) use (&$bindE) {
-    return function() use($a, $f) {
+$pureE = function ($x) {
+    return function () use ($x) {
+        return $x;
+    };
+};
+$bindE = function ($a, $f) {
+    return function () use ($a, $f) {
         $a_res = $a();
         $res = $f($a_res);
         return $res();
     };
 };
 
-$untilE = function($f) {
-    return function() use ($f) {
-        while (!$f()) {}
+$untilE = function ($f) {
+    return function () use ($f) {
+        while (!$f()) {
+        }
     };
 };
 
-$whileE = function($f, $a) use (&$whileE) {
-    return function() use ($f, $a) {
+$whileE = function ($f, $a) {
+    return function () use ($f, $a) {
         while ($f()) {
             $a();
         }
     };
 };
 
-$forE = function($lo, $hi, $f) use (&$forE) {
-    return function() use ($lo, $hi, $f) {
+$forE = function ($lo, $hi, $f) {
+    return function () use ($lo, $hi, $f) {
         for ($i = $lo; $i < $hi; $i++) {
             $f($i)();
         }
     };
 };
 
-$foreachE = function($as, $f) use (&$foreachE) {
-    return function() use ($as, $f) {
+$foreachE = function ($as, $f) {
+    return function () use ($as, $f) {
         foreach ($as as $a) {
             $f($a)();
         }
